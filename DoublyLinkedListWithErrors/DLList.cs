@@ -16,9 +16,8 @@ namespace DoublyLinkedListWithErrors
         * unit test to discover these errors. During delivery the tutor may
         * add or remove errors to adjust the scale of the effort required by
         */
-        public void addToTail(DLLNode p)
+        public void AddToTail(DLLNode p)
         {
-
             if (head == null)
             {
                 head = p;
@@ -26,13 +25,13 @@ namespace DoublyLinkedListWithErrors
             }
             else
             {
+                p.previous = tail;
                 tail.next = p;
                 tail = p;
-                p.previous = tail;
             }
-        } // end of addToTail
+        } // end of AddToTail
 
-        public void addToHead(DLLNode p)
+        public void AddToHead(DLLNode p)
         {
             if (head == null)
             {
@@ -41,78 +40,90 @@ namespace DoublyLinkedListWithErrors
             }
             else
             {
-                p.next = this.head;
-                this.head.previous = p;
+                p.next = head;
+                head.previous = p;
                 head = p;
             }
-        } // end of addToHead
+        } // end of AddToHead
 
-        public void removHead()
+        public void RemoveHead()
         {
-            if (this.head == null) return;
-            this.head = this.head.next;
-            this.head.previous = null;
-        } // removeHead
-
-        public void removeTail()
-        {
-            if (this.tail == null) return;
-            if (this.head == this.tail)
-            {
-                this.head = null;
-                this.tail = null;
+            if (head == null)
                 return;
+
+            if (head == tail)
+            {
+                head = null;
+                tail = null;
             }
-        } // remove tail
+            else
+            {
+                head = head.next;
+                head.previous = null;
+            }
+        } // end of RemoveHead
+
+        public void RemoveTail()
+        {
+            if (tail == null)
+                return;
+
+            if (head == tail)
+            {
+                head = null;
+                tail = null;
+            }
+            else
+            {
+                tail = tail.previous;
+                tail.next = null;
+            }
+        } // end of RemoveTail
 
         /*-------------------------------------------------
-         * Return null if the string does not exist.
+         * Return null if the node does not exist.
          * ----------------------------------------------*/
-        public DLLNode search(int num)
+        public DLLNode Search(int num)
         {
             DLLNode p = head;
             while (p != null)
             {
+                if (p.num == num)
+                    return p;
                 p = p.next;
-                if (p.num == num) break;
             }
-            return (p);
-        } // end of search (return pionter to the node);
+            return null;
+        } // end of Search (return pointer to the node)
 
-        public void removeNode(DLLNode p)
-        { // removing the node p.
-
-            if (p.next == null)
-            {
-                this.tail = this.tail.previous;
-                this.tail.next = null;
-                p.previous = null;
+        public void RemoveNode(DLLNode p)
+        {
+            if (p == null)
                 return;
-            }
+
             if (p.previous == null)
+                RemoveHead();
+            else if (p.next == null)
+                RemoveTail();
+            else
             {
-                this.head = this.head.next;
-                p.next = null;
-                this.head.previous = null;
-                return;
+                p.previous.next = p.next;
+                p.next.previous = p.previous;
             }
-            p.next.previous = p.previous;
-            p.previous.next = p.next;
+
             p.next = null;
             p.previous = null;
-            return;
-        } // end of remove a node
+        } // end of RemoveNode
 
-        public int total()
+        public int Total()
         {
             DLLNode p = head;
             int tot = 0;
             while (p != null)
             {
                 tot += p.num;
-                p = p.next.next;
+                p = p.next;
             }
-            return (tot);
+            return tot;
         } // end of total
     } // end of DLList class
 }
